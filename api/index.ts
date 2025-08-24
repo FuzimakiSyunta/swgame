@@ -4,6 +4,7 @@ import { createHash, randomBytes } from "crypto";
 import jwt from "jsonwebtoken";
 import config from "./config";
 
+
 const app = express();
 const prisma = new PrismaClient();
 
@@ -108,7 +109,12 @@ async function VerifyToken(
   }
 }
 
-// ----------------------------------------
+app.get("/", (req, res) => {
+  res.send("API is running 🚀");
+});
+
+
+// ----------------------------------------s
 // スコア一覧取得 (認証必要)
 // ----------------------------------------
 app.get("/scores", VerifyToken, async (_req, res) => {

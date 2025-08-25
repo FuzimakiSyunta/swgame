@@ -184,8 +184,8 @@ app.use(
 // ----------------------------------------
 // サーバー起動
 // ----------------------------------------
-app.listen(config.port, () => {
-  console.log(`API server running on http://localhost:${config.port}`);
-});
+//app.listen(config.port, () => {
+  //console.log(`API server running on http://localhost:${config.port}`);
+//});
 
 export default app;

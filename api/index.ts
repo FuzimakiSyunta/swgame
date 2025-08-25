@@ -110,7 +110,7 @@ async function VerifyToken(
 }
 
 app.get("/", (req, res) => {
-  res.send("API is running 🚀");
+  res.status(200).json({ message: "Hello from swgame API on Vercel!" });
 });
 
 

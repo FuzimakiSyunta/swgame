@@ -10,6 +10,9 @@ const prisma = new PrismaClient();
 
 app.use(express.json());
 
+app.get("/", (req: express.Request, res: express.Response) => {
+  res.status(200).json({ message: "Hello from swgame API on Vercel!" });
+});
 // ----------------------------------------
 // ユーザー登録
 // ----------------------------------------
@@ -108,11 +111,6 @@ async function VerifyToken(
     res.status(401).json({ error: "header error" });
   }
 }
-
-app.get("/", (req, res) => {
-  res.status(200).json({ message: "Hello from swgame API on Vercel!" });
-});
-
 
 // ----------------------------------------s
 // スコア一覧取得 (認証必要)

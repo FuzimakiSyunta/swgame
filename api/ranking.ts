@@ -1,4 +1,3 @@
-// api/ranking.ts
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -19,7 +18,7 @@ export default async function handler(req, res) {
           h1 { color: #333; }
           table { border-collapse: collapse; width: 300px; }
           th, td { border: 1px solid #aaa; padding: 8px; text-align: center; }
-          th { background: #eee; }
+          tr:nth-child(even) { background: #eee; }
         </style>
       </head>
       <body>
@@ -31,7 +30,8 @@ export default async function handler(req, res) {
               <td>${i + 1}</td>
               <td>${s.user?.name ?? "???"}</td>
               <td>${s.score}</td>
-            </tr>`).join("")}
+            </tr>
+          `).join("")}
         </table>
       </body>
     </html>

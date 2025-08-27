@@ -3,8 +3,7 @@
   "builds": [
     { "src": "api/**/*.ts", "use": "@vercel/node" }
   ],
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/(.*)", "destination": "/api" }
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/$1" }
   ]
 }

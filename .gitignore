@@ -1,7 +1,5 @@
-cat > .gitignore << 'EOF'
 node_modules/
 .prisma/
 dist/
 .env
 *.log
-EOF

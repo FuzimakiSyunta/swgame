@@ -14,15 +14,6 @@ app.get("/", (req: express.Request, res: express.Response) => {
   res.status(200).json({ message: "Hello from swgame API on Vercel!" });
 });
 
-app.get("/health", (_req, res) => {
-  res.json({
-    ok: true,
-    hasPepper: !!config.pepper,
-    hasDbPool: !!process.env.POSTGRES_PRISMA_URL,
-    hasDbDirect: !!process.env.POSTGRES_URL_NON_POOLING,
-  });
-});
-
 // ----------------------------------------
 // ユーザー登録
 // ----------------------------------------

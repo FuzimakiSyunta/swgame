@@ -2,7 +2,8 @@ import express from "express";
 import { PrismaClient, User } from "@prisma/client";
 import { createHash, randomBytes } from "crypto";
 import jwt from "jsonwebtoken";
-import config from "./config";
+import config from "./config.js";
+
 
 const app = express();
 const prisma = new PrismaClient();

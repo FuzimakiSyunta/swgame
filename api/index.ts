@@ -201,7 +201,10 @@ app.get("/__routes", (_req, res) => {
   // @ts-ignore
   const routes = (app._router?.stack || [])
     .filter((l: any) => l.route)
-    .map((l: any) => `${Object.keys(l.route.methods)[0].toUpperCase()} ${l.route.path}`);
+    .map((l: any) => {
+      const method = Object.keys(l.route.methods)[0]?.toUpperCase() || "GET";
+      return `${method} ${l.route.path}`;
+    });
   res.json({ routes });
 });
 

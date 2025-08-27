@@ -4,16 +4,15 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export default async function handler(req: any, res: any) {
-  const scores = await prisma.score.findMany({
-    orderBy: { score: "desc" },
-    take: 5,
-  });
+  try {
+    const scores = await prisma.score.findMany({
+      orderBy: { score: "desc" },
+      take: 5,
+    });
 
-  let text = "Score Ranking (Top 5)\n";
-  scores.forEach((s, i) => {
-    text += `${i + 1}. ${s.score}\n`;
-  });
-
-  res.setHeader("Content-Type", "text/plain");
-  res.status(200).send(text);
+    res.setHeader("Content-Type", "application/json");
+    res.status(200).send(scores);
+  } catch (err: any) {
+    res.status(500).send({ error: err.message });
+  }
 }

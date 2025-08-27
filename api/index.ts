@@ -76,6 +76,16 @@ app.get("/ranking", async (_, res) => {
   });
   res.json(scores);
 });
+// 誰でも見れるランキング（発表・先生確認用）
+app.get("/public/scores", async (_, res) => {
+  const scores = await prisma.score.findMany({
+    orderBy: { score: "desc" },
+    include: { user: true },
+    take: 5,
+  });
+  res.json(scores);
+});
+
 
 // ユーザー登録
 app.post("/users/new", async (req, res) => {

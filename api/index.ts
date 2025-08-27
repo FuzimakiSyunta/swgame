@@ -13,31 +13,50 @@ app.use(express.json());
 app.get("/", (req: express.Request, res: express.Response) => {
   res.status(200).json({ message: "Hello from swgame API on Vercel!" });
 });
+
+app.get("/health", (_req, res) => {
+  res.json({
+    ok: true,
+    hasPepper: !!config.pepper,
+    hasDbPool: !!process.env.POSTGRES_PRISMA_URL,
+    hasDbDirect: !!process.env.POSTGRES_URL_NON_POOLING,
+  });
+});
+
 // ----------------------------------------
 // ユーザー登録
 // ----------------------------------------
 app.post("/users/new", async (req, res) => {
   try {
-    const name = req.body.name;
-    const salt = randomBytes(8).toString("hex");
-    const password = createHash("sha256")
-      .update(req.body.password + salt + config.pepper, "utf8")
+    const { name, password } = req.body as { name?: string; password?: string };
+
+    if (!name || !password) {
+      return res.status(400).json({ error: "name と password は必須です" });
+    }
+
+    // salt 生成（16バイトで十分）
+    const salt = randomBytes(16).toString("hex");
+
+    // とにかく動く版：SHA-256 1回ハッシュ（pepper + salt）
+    const hashed = createHash("sha256")
+      .update(password + salt + (config.pepper || ""), "utf8")
       .digest("hex");
 
-    const result = await prisma.user.create({
-      data: {
-        name,
-        password,
-        salt,
-      },
+    const user = await prisma.user.create({
+      data: { name, password: hashed, salt },
     });
 
-    res.json(result);
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: "ユーザー作成に失敗しました" });
+    res.status(201).json({ ok: true, id: user.id, name: user.name });
+  } catch (e: any) {
+    // Prisma の一意制約（同じ name）が理由なら 409
+    if (e?.code === "P2002") {
+      return res.status(409).json({ error: "そのユーザー名は既に存在します" });
+    }
+    console.error("users/new error:", e);
+    res.status(500).json({ error: "ユーザー作成に失敗しました", detail: e?.message });
   }
 });
+
 
 // ----------------------------------------
 // ログイン

@@ -7,7 +7,6 @@
   "scripts": {
     "dev": "nodemon api/index.ts",
     "build": "prisma generate && prisma migrate deploy && tsc",
-    "start": "node dist/index.js",
     "postinstall": "prisma generate"
   },
   "dependencies": {

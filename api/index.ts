@@ -197,5 +197,12 @@ app.use(
 //app.listen(config.port, () => {
   //console.log(`API server running on http://localhost:${config.port}`);
 //});
+app.get("/__routes", (_req, res) => {
+  // @ts-ignore
+  const routes = (app._router?.stack || [])
+    .filter((l: any) => l.route)
+    .map((l: any) => `${Object.keys(l.route.methods)[0].toUpperCase()} ${l.route.path}`);
+  res.json({ routes });
+});
 
 export default app;

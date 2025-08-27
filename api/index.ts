@@ -67,6 +67,16 @@ app.post("/scores", VeriFyToken, async (req, res) => {
   res.json(result ? { status_code: 200 } : { status_code: 500 });
 });
 
+// ✅ 公開ランキング（認証なし）
+app.get("/ranking", async (_, res) => {
+  const scores = await prisma.score.findMany({
+    orderBy: { score: "desc" },
+    include: { user: true },
+    take: 5,
+  });
+  res.json(scores);
+});
+
 // ユーザー登録
 app.post("/users/new", async (req, res) => {
   console.log("Request hit /api/users/new", req.method, req.body);

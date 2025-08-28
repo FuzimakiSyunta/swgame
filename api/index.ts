@@ -3,10 +3,20 @@ import { PrismaClient, User } from "@prisma/client";
 import { createHash, randomBytes } from "crypto";
 import jwt from "jsonwebtoken";
 import config from "./config.js";
+import * as fs from "fs";
+import * as path from "path";
 
 
 const app = express();
 const prisma = new PrismaClient();
+
+app.get("/", (_, res) => {
+  const filePath = path.join(process.cwd(), "api/index.ts"); // プロジェクト直下の api/index.ts
+  const source = fs.readFileSync(filePath, "utf8");
+  res.setHeader("Content-Type", "text/plain; charset=utf-8");
+  res.send(source);
+});
+
 
 async function VeriFyToken(req: express.Request, res: express.Response, next: any) {
   const authHeader = req.headers["authorization"];

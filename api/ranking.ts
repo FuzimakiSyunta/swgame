@@ -1,9 +1,8 @@
 import { PrismaClient } from "@prisma/client";
-import { Request, Response } from "express";
 
 const prisma = new PrismaClient();
 
-export default async function handler(req: Request, res: Response) {
+export default async function handler(req: any, res: any) {
   try {
     const scores = await prisma.score.findMany({
       orderBy: { score: "desc" },
@@ -12,6 +11,7 @@ export default async function handler(req: Request, res: Response) {
 
     res.status(200).json(scores);
   } catch (error) {
+    console.error("Error fetching scores:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 }

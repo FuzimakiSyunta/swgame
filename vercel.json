@@ -1,18 +1,9 @@
 {
   "version": 2,
-  "public": true,
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/public/$1"
-    }
+  "builds": [
+    { "src": "api/index.ts", "use": "@vercel/node" }
   ],
-  "headers": [
-    {
-      "source": "/(.*).ts",
-      "headers": [
-        { "key": "Content-Type", "value": "text/plain; charset=utf-8" }
-      ]
-    }
+  "routes": [
+    { "src": "/(.*)", "dest": "api/index.ts" }
   ]
 }
